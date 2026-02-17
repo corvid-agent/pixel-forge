@@ -1,0 +1,30 @@
+<div class="gallery-container">
+  <div class="gallery-header">
+    <h2>Gallery</h2>
+    <a routerLink="/" class="new-btn">+ New Artwork</a>
+  </div>
+
+  @if (artworks().length === 0) {
+    <div class="empty-state">
+      <p>No saved artworks yet.</p>
+      <a routerLink="/" class="new-btn">Create your first pixel art</a>
+    </div>
+  } @else {
+    <div class="artwork-grid">
+      @for (artwork of artworks(); track artwork.id) {
+        <a [routerLink]="['/edit', artwork.id]" class="artwork-card">
+          <div class="thumbnail-wrapper">
+            <img [src]="getThumbnail(artwork)" [alt]="artwork.name" class="thumbnail" />
+          </div>
+          <div class="artwork-info">
+            <span class="artwork-name">{{ artwork.name }}</span>
+            <span class="artwork-meta">{{ artwork.width }}x{{ artwork.height }} &middot; {{ formatDate(artwork.updatedAt) }}</span>
+          </div>
+          <button class="delete-btn" (click)="deleteArtwork(artwork.id, $event)" title="Delete">
+            &#x2715;
+          </button>
+        </a>
+      }
+    </div>
+  }
+</div>

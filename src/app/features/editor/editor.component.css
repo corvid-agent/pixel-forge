@@ -159,6 +159,7 @@
   .toolbar-right {
     border-bottom: none;
     border-top: 1px solid var(--border);
+    padding-bottom: 32px;
   }
 
   .tool-group {

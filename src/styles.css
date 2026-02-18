@@ -5,7 +5,7 @@
   --surface-hover: rgba(255, 255, 255, 0.06);
   --border: #2a2a2a;
   --text: #e4e4e4;
-  --text-muted: #888;
+  --text-muted: #555;
   --accent: #6ec8ff;
   --danger: #ff6b6b;
 }
@@ -51,4 +51,17 @@ html, body {
 ::selection {
   background: var(--accent);
   color: var(--bg);
+}
+
+/* ── Accessibility (WCAG AA) ── */
+:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
 }

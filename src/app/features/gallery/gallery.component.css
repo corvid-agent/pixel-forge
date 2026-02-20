@@ -19,12 +19,15 @@
 }
 
 .new-btn {
+  display: inline-flex;
+  align-items: center;
   background: var(--accent);
   color: var(--bg);
   border: none;
-  padding: 8px 16px;
+  min-height: 44px;
+  padding: 10px 16px;
   border-radius: 8px;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
@@ -95,14 +98,14 @@
 
 .artwork-name {
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .artwork-meta {
-  font-size: 0.7rem;
+  font-size: 0.875rem;
   color: var(--text-muted);
 }
 
@@ -110,14 +113,14 @@
   position: absolute;
   top: 8px;
   right: 8px;
-  width: 28px;
-  height: 28px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   border: none;
   background: rgba(0, 0, 0, 0.6);
   color: #ff6b6b;
   cursor: pointer;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -131,4 +134,8 @@
 
 .delete-btn:hover {
   background: rgba(255, 60, 60, 0.3);
+}
+
+.delete-btn:focus-visible {
+  opacity: 1;
 }

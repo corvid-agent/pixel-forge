@@ -20,8 +20,8 @@
             <span class="artwork-name">{{ artwork.name }}</span>
             <span class="artwork-meta">{{ artwork.width }}x{{ artwork.height }} &middot; {{ formatDate(artwork.updatedAt) }}</span>
           </div>
-          <button class="delete-btn" (click)="deleteArtwork(artwork.id, $event)" title="Delete">
-            &#x2715;
+          <button class="delete-btn" (click)="deleteArtwork(artwork.id, $event)" [attr.aria-label]="'Delete ' + artwork.name" title="Delete">
+            <span aria-hidden="true">&#x2715;</span>
           </button>
         </a>
       }

@@ -29,11 +29,11 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
   private animFrameId = 0;
   private editId: string | null = null;
 
-  readonly tools: { type: ToolType; label: string; icon: string }[] = [
-    { type: 'pen', label: 'Pen', icon: 'P' },
-    { type: 'eraser', label: 'Eraser', icon: 'E' },
-    { type: 'fill', label: 'Fill', icon: 'F' },
-    { type: 'eyedropper', label: 'Pick', icon: 'I' },
+  readonly tools: { type: ToolType; label: string; icon: string; shortcut: string }[] = [
+    { type: 'pen', label: 'Pen', icon: 'P', shortcut: 'P' },
+    { type: 'eraser', label: 'Eraser', icon: 'E', shortcut: 'E' },
+    { type: 'fill', label: 'Fill', icon: 'F', shortcut: 'F' },
+    { type: 'eyedropper', label: 'Pick', icon: 'I', shortcut: 'I' },
   ];
 
   readonly sizes = [8, 16, 24, 32, 48, 64];
@@ -275,10 +275,21 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
       } else {
         this.undo();
       }
+      return;
     }
     if ((e.metaKey || e.ctrlKey) && e.key === 's') {
       e.preventDefault();
       this.save();
+      return;
+    }
+
+    // Tool shortcuts (single key, no modifiers)
+    if (!e.metaKey && !e.ctrlKey && !e.altKey) {
+      const key = e.key.toLowerCase();
+      const toolMap: Record<string, ToolType> = { p: 'pen', e: 'eraser', f: 'fill', i: 'eyedropper' };
+      if (toolMap[key]) {
+        this.canvas.setTool(toolMap[key]);
+      }
     }
   }
 }

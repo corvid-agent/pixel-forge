@@ -1,60 +1,74 @@
 <div class="editor-layout">
   <!-- Left Toolbar -->
-  <aside class="toolbar toolbar-left">
-    <div class="tool-group">
-      <h3>Tools</h3>
+  <aside class="toolbar toolbar-left" aria-label="Drawing tools">
+    <div class="tool-group" role="group" aria-labelledby="tools-heading">
+      <h3 id="tools-heading">Tools</h3>
       @for (tool of tools; track tool.type) {
         <button
           class="tool-btn"
           [class.active]="canvasService.activeTool() === tool.type"
           (click)="selectTool(tool.type)"
-          [title]="tool.label"
+          [attr.aria-label]="tool.label + ' tool (' + tool.shortcut + ')'"
+          [attr.aria-pressed]="canvasService.activeTool() === tool.type"
+          [title]="tool.label + ' (' + tool.shortcut + ')'"
         >
-          <span class="tool-icon">{{ tool.icon }}</span>
+          <span class="tool-icon" aria-hidden="true">{{ tool.icon }}</span>
           <span class="tool-label">{{ tool.label }}</span>
         </button>
       }
     </div>
 
-    <div class="tool-group">
-      <h3>Actions</h3>
-      <button class="tool-btn" (click)="undo()" [disabled]="!historyService.canUndo()" title="Undo (Ctrl+Z)">
-        <span class="tool-icon">&#x21A9;</span>
+    <div class="tool-group" role="group" aria-labelledby="actions-heading">
+      <h3 id="actions-heading">Actions</h3>
+      <button class="tool-btn" (click)="undo()" [disabled]="!historyService.canUndo()" aria-label="Undo (Ctrl+Z)" title="Undo (Ctrl+Z)">
+        <span class="tool-icon" aria-hidden="true">&#x21A9;</span>
         <span class="tool-label">Undo</span>
       </button>
-      <button class="tool-btn" (click)="redo()" [disabled]="!historyService.canRedo()" title="Redo (Ctrl+Shift+Z)">
-        <span class="tool-icon">&#x21AA;</span>
+      <button class="tool-btn" (click)="redo()" [disabled]="!historyService.canRedo()" aria-label="Redo (Ctrl+Shift+Z)" title="Redo (Ctrl+Shift+Z)">
+        <span class="tool-icon" aria-hidden="true">&#x21AA;</span>
         <span class="tool-label">Redo</span>
       </button>
-      <button class="tool-btn" (click)="toggleGrid()" [class.active]="canvasService.showGrid()" title="Toggle Grid">
-        <span class="tool-icon">#</span>
+      <button class="tool-btn" (click)="toggleGrid()" [class.active]="canvasService.showGrid()" [attr.aria-pressed]="canvasService.showGrid()" aria-label="Toggle grid overlay" title="Toggle Grid">
+        <span class="tool-icon" aria-hidden="true">#</span>
         <span class="tool-label">Grid</span>
       </button>
-      <button class="tool-btn" (click)="clearCanvas()" title="Clear Canvas">
-        <span class="tool-icon">&#x2715;</span>
+      <button class="tool-btn" (click)="clearCanvas()" aria-label="Clear canvas" title="Clear Canvas">
+        <span class="tool-icon" aria-hidden="true">&#x2715;</span>
         <span class="tool-label">Clear</span>
       </button>
     </div>
 
     <div class="tool-group">
-      <h3>Size</h3>
-      <select class="size-select" [(ngModel)]="selectedSize" (ngModelChange)="onSizeChange()">
+      <h3 id="size-heading">Size</h3>
+      <select class="size-select" [(ngModel)]="selectedSize" (ngModelChange)="onSizeChange()" aria-labelledby="size-heading">
         @for (s of sizes; track s) {
           <option [ngValue]="s">{{ s }}x{{ s }}</option>
         }
       </select>
     </div>
 
-    <div class="tool-group">
-      <h3>File</h3>
-      <button class="tool-btn" (click)="save()" title="Save (Ctrl+S)">
-        <span class="tool-icon">&#x1F4BE;</span>
+    <div class="tool-group" role="group" aria-labelledby="file-heading">
+      <h3 id="file-heading">File</h3>
+      <button class="tool-btn" (click)="save()" aria-label="Save artwork (Ctrl+S)" title="Save (Ctrl+S)">
+        <span class="tool-icon" aria-hidden="true">&#x1F4BE;</span>
         <span class="tool-label">Save</span>
       </button>
-      <button class="tool-btn" (click)="exportPng()" title="Export PNG">
-        <span class="tool-icon">&#x21E9;</span>
+      <button class="tool-btn" (click)="exportPng()" aria-label="Export as PNG" title="Export PNG">
+        <span class="tool-icon" aria-hidden="true">&#x21E9;</span>
         <span class="tool-label">Export</span>
       </button>
+    </div>
+
+    <div class="keyboard-shortcuts" aria-label="Keyboard shortcuts">
+      <h3>Shortcuts</h3>
+      <dl class="shortcut-list">
+        <div class="shortcut-item"><dt><kbd>P</kbd></dt><dd>Pen</dd></div>
+        <div class="shortcut-item"><dt><kbd>E</kbd></dt><dd>Eraser</dd></div>
+        <div class="shortcut-item"><dt><kbd>F</kbd></dt><dd>Fill</dd></div>
+        <div class="shortcut-item"><dt><kbd>I</kbd></dt><dd>Eyedropper</dd></div>
+        <div class="shortcut-item"><dt><kbd>Ctrl+Z</kbd></dt><dd>Undo</dd></div>
+        <div class="shortcut-item"><dt><kbd>Ctrl+S</kbd></dt><dd>Save</dd></div>
+      </dl>
     </div>
   </aside>
 
@@ -63,6 +77,8 @@
     <canvas
       #pixelCanvas
       class="pixel-canvas"
+      role="img"
+      aria-label="Pixel art canvas"
       (mousedown)="onMouseDown($event)"
       (mousemove)="onMouseMove($event)"
       (mouseup)="onMouseUp()"
@@ -71,26 +87,28 @@
   </main>
 
   <!-- Right Panel -->
-  <aside class="toolbar toolbar-right">
+  <aside class="toolbar toolbar-right" aria-label="Color options">
     <div class="tool-group">
       <h3>Active Color</h3>
-      <div class="active-color-preview" [style.background-color]="canvasService.activeColor()"></div>
+      <div class="active-color-preview" [style.background-color]="canvasService.activeColor()" role="status" [attr.aria-label]="'Active color: ' + canvasService.activeColor()"></div>
     </div>
 
     <div class="tool-group">
-      <h3>Palette</h3>
-      <select class="size-select" [ngModel]="canvasService.paletteName()" (ngModelChange)="selectPalette($event)">
+      <h3 id="palette-heading">Palette</h3>
+      <select class="size-select" [ngModel]="canvasService.paletteName()" (ngModelChange)="selectPalette($event)" aria-labelledby="palette-heading">
         @for (name of paletteNames; track name) {
           <option [ngValue]="name">{{ name }}</option>
         }
       </select>
-      <div class="palette-grid">
+      <div class="palette-grid" role="group" aria-label="Color swatches">
         @for (color of canvasService.palette(); track color) {
           <button
             class="swatch"
             [style.background-color]="color"
             [class.active]="canvasService.activeColor() === color"
             (click)="selectColor(color)"
+            [attr.aria-label]="'Select color ' + color"
+            [attr.aria-pressed]="canvasService.activeColor() === color"
             [title]="color"
           ></button>
         }

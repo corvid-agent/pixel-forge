@@ -1,3 +1,5 @@
+<p align="center"><img src="docs/preview.png" alt="pixel-forge preview" width="100%"></p>
+
 # Pixel Forge
 
 Browser-based pixel art editor with drawing tools, color palettes, undo/redo, and a local gallery.
